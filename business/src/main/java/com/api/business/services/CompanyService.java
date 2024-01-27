@@ -24,13 +24,17 @@ public class CompanyService {
     private final AuditService auditService;
 
     public CompanyResponse saveCompany(CompanyRequest request, String spokesmanDocument, String details) {
+
+        // TODO: fazer uma validação onde o CNPJ ja existe
         try {
             CompanyData companyData = CompanyData.builder()
                     .companyName(request.getCompanyName())
                     .totalValue(BigDecimal.ZERO)
                     .initialDate(LocalDate.now())
+                    .lastUpdateDate(LocalDate.now())
                     .contracteeDocumentNumber(request.getContracteeDocumentNumber())
                     .isActive(true)
+                    .email(request.getEmail())
                     .madePayment(false)
                     .contractNumber(request.getContractNumber())
                     .paymentStatus(PaymentStatus.WAITING_PROCESSING)
@@ -42,6 +46,7 @@ public class CompanyService {
             return CompanyResponse.builder()
                     .contractNumber(companyData.getContractNumber())
                     .companyName(companyData.getCompanyName())
+                    .email(request.getEmail())
                     .paymentStatus(companyData.getPaymentStatus())
                     .build();
 

@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -28,6 +30,9 @@ public class PaymentRequest {
 
     @NotBlank(message = "contractNumber must be informed")
     private String bankAccount;
+
+    @JsonIgnore
+    private LocalDate lastUpdateDate;
 
     @JsonIgnore
     private boolean madePayment;

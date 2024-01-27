@@ -1,6 +1,6 @@
-package com.api.business.entites;
+package com.springBatch.entites;
 
-import com.api.business.enums.PaymentStatus;
+import com.springBatch.enums.PaymentStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

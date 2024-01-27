@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ public class FinancingService {
         try {
             existingCompany.setPaymentStatus(PaymentStatus.PARTNER_SENT);
             existingCompany.setTotalValue(request.getValue());
+            existingCompany.setLastUpdateDate(LocalDate.now());
             existingCompany.setMadePayment(false);
 
             log.info("Company updated successfully");
@@ -33,6 +36,7 @@ public class FinancingService {
         } catch (Exception ex) {
             existingCompany.setPaymentStatus(PaymentStatus.PAYMENT_REJECTED);
             existingCompany.setTotalValue(request.getValue());
+            existingCompany.setLastUpdateDate(LocalDate.now());
             existingCompany.setMadePayment(false);
 
             log.error("Error to update company, payment rejected!");

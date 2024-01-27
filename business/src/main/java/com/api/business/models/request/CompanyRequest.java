@@ -2,6 +2,8 @@ package com.api.business.models.request;
 
 import com.api.business.utils.Regex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -29,8 +31,14 @@ public class CompanyRequest {
     @NotBlank(message = "companyName must be informed")
     private String companyName;
 
+    @Email
+    private String email;
+
     @JsonIgnore
     private LocalDate initialDate;
+
+    @JsonIgnore
+    private LocalDate lastUpdateDate;
 
     @JsonIgnore
     private String paymentStatus;

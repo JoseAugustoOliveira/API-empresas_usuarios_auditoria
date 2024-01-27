@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -27,6 +28,9 @@ public class FinancingRequest {
 
     @JsonIgnore
     private String paymentStatus;
+
+    @JsonIgnore
+    private LocalDate lastUpdateDate;
 
     private BigDecimal value;
 }
