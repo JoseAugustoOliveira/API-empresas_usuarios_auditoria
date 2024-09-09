@@ -2,7 +2,6 @@ package com.api.business.models.request;
 
 import com.api.business.utils.Regex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -44,7 +43,7 @@ public class CompanyRequest {
     private String paymentStatus;
 
     @JsonIgnore
-    private BigDecimal value;
+    private BigDecimal orderValue;
 
     @JsonIgnore
     private boolean isActive;

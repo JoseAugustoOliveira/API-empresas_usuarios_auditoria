@@ -29,7 +29,7 @@ public class EligibilityComponent {
                 contracteeDocumentNumber, contractNumber);
 
         if (company.isPresent()) {
-            log.debug("Contractee document number {} and contract number {} are registered in the database.",
+            log.info("Contractee document number {} and contract number {} are registered in the database.",
                     contracteeDocumentNumber, contractNumber);
 
             return true;

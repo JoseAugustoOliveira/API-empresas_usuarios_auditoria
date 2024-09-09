@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Slf4j
@@ -27,16 +28,22 @@ public class FinancingService {
 
         try {
             existingCompany.setPaymentStatus(PaymentStatus.PARTNER_SENT);
-            existingCompany.setTotalValue(request.getValue());
+            existingCompany.setOrderValue(request.getOrderValue());
             existingCompany.setLastUpdateDate(LocalDate.now());
+            existingCompany.setQuantityInstallments(request.getQuantityInstallments());
+            existingCompany.setInterest(getValidCompanyComponent.calculateInterest(request.getQuantityInstallments()));
+            existingCompany.getCompanyData().setTotalValueWithInterested(request.getOrderValue().multiply(
+                    BigDecimal.valueOf(getValidCompanyComponent.calculateInterest(request.getQuantityInstallments()) / 10)));
             existingCompany.setMadePayment(false);
 
-            log.info("Company updated successfully");
+            log.info("Company updated successfully with contract document number: {}", request.getContracteeDocumentNumber());
 
         } catch (Exception ex) {
             existingCompany.setPaymentStatus(PaymentStatus.PAYMENT_REJECTED);
-            existingCompany.setTotalValue(request.getValue());
+            existingCompany.setOrderValue(request.getOrderValue());
             existingCompany.setLastUpdateDate(LocalDate.now());
+            existingCompany.setQuantityInstallments(0);
+            existingCompany.setInterest(0d);
             existingCompany.setMadePayment(false);
 
             log.error("Error to update company, payment rejected!");

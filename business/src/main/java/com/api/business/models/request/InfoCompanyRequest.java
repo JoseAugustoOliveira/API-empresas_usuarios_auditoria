@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EligibilityRequest {
+public class InfoCompanyRequest {
 
     @NotBlank(message = "contracteeDocumentNumber must be informed")
     @Pattern(regexp = Regex.CNPJ, message = "contracteeDocumentNumber must be a valid CNPJ")

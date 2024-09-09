@@ -15,5 +15,6 @@ public class CompanyResponse {
     private String contractNumber;
     private String companyName;
     private String email;
+    private String contracteeDocumentNumber;
     private PaymentStatus paymentStatus;
 }

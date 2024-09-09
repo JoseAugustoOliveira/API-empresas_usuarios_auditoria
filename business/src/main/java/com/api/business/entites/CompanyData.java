@@ -2,6 +2,7 @@ package com.api.business.entites;
 
 import com.api.business.enums.PaymentStatus;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -48,18 +49,30 @@ public class CompanyData {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
-    @Column(name = "VALOR_TOTAL")
-    private BigDecimal totalValue;
-
     @Column(name = "DATA_CADASTRO")
     private LocalDate initialDate;
 
     @Column(name = "DATA_ULTIMA_ATUALIZACAO")
     private LocalDate lastUpdateDate;
 
+    @Column(name = "DATA_ULTIMO_PAGAMENTO")
+    private LocalDate lastPaymentDate;
+
     @Column(name = "ATIVA")
     private Boolean isActive;
 
     @Column(name = "PAGAMENTO_EFETUADO")
     private Boolean madePayment;
+
+    @Column(name = "QTD_PARCELAS")
+    private Integer quantityInstallments;
+
+    @Column(name = "JUROS")
+    private Double interest;
+
+    @Column(name = "VALOR_DO_PEDIDO")
+    private BigDecimal orderValue;
+
+    @Embedded
+    private FinancingCompanyData companyData;
 }

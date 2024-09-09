@@ -1,5 +1,7 @@
 package com.api.business.models.request;
 
+import com.api.business.enums.FinancingCompany;
+import com.api.business.enums.PaymentStatusFinancing;
 import com.api.business.utils.Regex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
@@ -25,11 +27,17 @@ public class PaymentRequest {
     @Pattern(regexp = Regex.ONLY_NUMBER, message = "contractNumber must be a number")
     private String contractNumber;
 
-    @NotBlank(message = "contractNumber must be informed")
-    private String bankName;
+    @NotBlank(message = "financingName must be informed")
+    private FinancingCompany financingName;
 
-    @NotBlank(message = "contractNumber must be informed")
-    private String bankAccount;
+    @NotBlank(message = "account must be informed")
+    private String account;
+
+    @NotBlank(message = "agency must be informed")
+    private String agency;
+
+    @NotBlank(message = "paymentStatusFinancing must be informed")
+    private PaymentStatusFinancing paymentStatusFinancing;
 
     @JsonIgnore
     private LocalDate lastUpdateDate;

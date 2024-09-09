@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import com.api.business.entites.Audit;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,7 +22,9 @@ public class AuditService {
 
     public void registerAuditToStaff(String spokesmanDocument, String details) {
         try {
-            var staff = staffRepository.findBySpokesmanDocument(spokesmanDocument)
+            var staff = staffRepository.findAll().stream()
+                    .filter(s -> BCrypt.checkpw(spokesmanDocument, s.getSpokesmanDocument()))
+                    .findFirst()
                     .orElseThrow(() -> new EntityNotFoundException("No staff found with SpokesmanDocument: "
                             + spokesmanDocument));
 

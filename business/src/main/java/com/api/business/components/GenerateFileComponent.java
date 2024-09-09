@@ -1,7 +1,6 @@
 package com.api.business.components;
 
 import com.api.business.entites.CompanyData;
-import com.api.business.repositories.CompanyRepository;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -28,7 +27,7 @@ import static com.api.business.utils.FormatUtils.formatPaymentDoneStatus;
 @RequiredArgsConstructor
 public class GenerateFileComponent {
 
-    private final CompanyRepository companyRepository;
+    private static final String NAME_FILE = "Dados_Empresariais.pdf";
 
     public ResponseEntity<ByteArrayResource> generatePdfByCompanies(List<CompanyData> companies) throws DocumentException {
         ByteArrayOutputStream byteArrayOutputStream = getByteArrayOutputStream(companies);
@@ -38,7 +37,7 @@ public class GenerateFileComponent {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("inline", "Dados_Empresariais.pdf");
+        headers.setContentDispositionFormData("inline", NAME_FILE);
 
         return ResponseEntity.ok()
                 .headers(headers)
@@ -64,7 +63,7 @@ public class GenerateFileComponent {
             document.add(new Paragraph("Numero do Contrato: " + company.getContractNumber()));
             document.add(new Paragraph("Nome da Empresa: " + company.getCompanyName()));
             document.add(new Paragraph("Status do Pagamento: " + company.getPaymentStatus().getLabel()));
-            document.add(new Paragraph("Valor total: " + formatCurrency(company.getTotalValue())));
+            document.add(new Paragraph("Valor total: " + formatCurrency(company.getOrderValue())));
             document.add(new Paragraph("Data do Registro: " + company.getInitialDate()));
             document.add(new Paragraph("Empresa ativa: " + formatActiveStatus(company.getIsActive())));
             document.add(new Paragraph("Pagamento feito: " + formatPaymentDoneStatus(company.getIsActive())));

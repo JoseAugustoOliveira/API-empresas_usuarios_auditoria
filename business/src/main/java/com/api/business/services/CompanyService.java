@@ -29,7 +29,7 @@ public class CompanyService {
         try {
             CompanyData companyData = CompanyData.builder()
                     .companyName(request.getCompanyName())
-                    .totalValue(BigDecimal.ZERO)
+                    .orderValue(BigDecimal.ZERO)
                     .initialDate(LocalDate.now())
                     .lastUpdateDate(LocalDate.now())
                     .contracteeDocumentNumber(request.getContracteeDocumentNumber())

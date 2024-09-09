@@ -1,8 +1,10 @@
 package com.api.business.controllers;
 
 import com.api.business.models.request.CompanyRequest;
+import com.api.business.models.request.InfoCompanyRequest;
 import com.api.business.models.request.FinancingRequest;
 import com.api.business.models.request.PaymentRequest;
+import com.api.business.models.response.ActivesCompaniesToValues;
 import com.api.business.models.response.CompanyResponse;
 import com.api.business.models.response.PaymentResponse;
 import com.api.business.services.CompanyService;
@@ -11,6 +13,7 @@ import com.api.business.services.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/business")
 @Tag(name = "Companies")
@@ -48,7 +52,17 @@ public class BusinessController {
     @PostMapping("/payment")
     @Operation(summary = "Register payment to company. Step 3")
     public PaymentResponse authorizePayment(@Valid @RequestBody PaymentRequest request, @RequestParam String spokesmanDocument, String details) {
+        // TODO: fazer o step de dados do banco | validar no banco
         return paymentService.authorizePayment(request, spokesmanDocument, details);
+    }
+
+    @GetMapping("/listContractsActives")
+    @Operation(summary = "List companies with contract actives to see values")
+    public List<ActivesCompaniesToValues> listActivesCompaniesAndValues( @RequestParam String contracteeDocumentNumber,
+                                                                         @RequestParam String contractNumber,
+                                                                         @RequestParam String spokesmanDocument,
+                                                                         @RequestParam String details) {
+       return paymentService.listActivesCompaniesAndValues(contracteeDocumentNumber, contractNumber, spokesmanDocument, details);
     }
 
     @GetMapping("/listCompanies")
