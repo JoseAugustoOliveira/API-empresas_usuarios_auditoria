@@ -5,6 +5,7 @@ import com.api.business.enums.PaymentStatusFinancing;
 import com.api.business.utils.Regex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,7 @@ public class PaymentRequest {
     @Pattern(regexp = Regex.ONLY_NUMBER, message = "contractNumber must be a number")
     private String contractNumber;
 
-    @NotBlank(message = "financingName must be informed")
+    @NotNull(message = "financingName must be informed")
     private FinancingCompany financingName;
 
     @NotBlank(message = "account must be informed")
@@ -36,7 +37,7 @@ public class PaymentRequest {
     @NotBlank(message = "agency must be informed")
     private String agency;
 
-    @NotBlank(message = "paymentStatusFinancing must be informed")
+    @JsonIgnore
     private PaymentStatusFinancing paymentStatusFinancing;
 
     @JsonIgnore

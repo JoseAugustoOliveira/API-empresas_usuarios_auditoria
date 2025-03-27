@@ -34,10 +34,10 @@ public class FinancingCompanyData {
     @Column(name = "AGENCIA")
     private String agency;
 
-    @Column(name = "STATUS_PAGAMENTO_FINANCIADORA")
-    @Enumerated(EnumType.STRING)
-    private PaymentStatusFinancing paymentStatusFinancing;
+//    @Column(name = "STATUS_PAGAMENTO_FINANCIADORA")
+//    @Enumerated(EnumType.STRING)
+//    private PaymentStatusFinancing paymentStatusFinancing;
 
-    @Column(name = "VR_TOTAL_COM_JUROS")
-    private BigDecimal totalValueWithInterested;
+//    @Column(name = "VR_TOTAL_COM_JUROS")
+//    private BigDecimal totalValueWithInterested;
 }

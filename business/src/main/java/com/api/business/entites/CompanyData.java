@@ -1,14 +1,17 @@
 package com.api.business.entites;
 
 import com.api.business.enums.PaymentStatus;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +21,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -64,15 +68,12 @@ public class CompanyData {
     @Column(name = "PAGAMENTO_EFETUADO")
     private Boolean madePayment;
 
-    @Column(name = "QTD_PARCELAS")
-    private Integer quantityInstallments;
-
-    @Column(name = "JUROS")
-    private Double interest;
-
     @Column(name = "VALOR_DO_PEDIDO")
     private BigDecimal orderValue;
 
     @Embedded
     private FinancingCompanyData companyData;
+
+    @OneToMany(mappedBy = "companyData", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PaymentData> payments;
 }

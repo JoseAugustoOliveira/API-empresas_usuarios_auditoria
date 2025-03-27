@@ -1,7 +1,6 @@
 package com.api.business.controllers;
 
 import com.api.business.models.request.CompanyRequest;
-import com.api.business.models.request.InfoCompanyRequest;
 import com.api.business.models.request.FinancingRequest;
 import com.api.business.models.request.PaymentRequest;
 import com.api.business.models.response.ActivesCompaniesToValues;
@@ -37,7 +36,7 @@ public class BusinessController {
     @Autowired
     private PaymentService paymentService;
 
-    @PostMapping("/saveCompany")
+    @PostMapping("/company")
     @Operation(summary = "Register new company. Step 1")
     public CompanyResponse saveCompany(@Valid @RequestBody CompanyRequest request, @RequestParam String spokesmanDocument, String details) {
         return companyService.saveCompany(request, spokesmanDocument, details);
@@ -52,11 +51,12 @@ public class BusinessController {
     @PostMapping("/payment")
     @Operation(summary = "Register payment to company. Step 3")
     public PaymentResponse authorizePayment(@Valid @RequestBody PaymentRequest request, @RequestParam String spokesmanDocument, String details) {
-        // TODO: fazer o step de dados do banco | validar no banco
+
+        // TODO: Testar o step 3
         return paymentService.authorizePayment(request, spokesmanDocument, details);
     }
 
-    @GetMapping("/listContractsActives")
+    @GetMapping("/contracts-actives")
     @Operation(summary = "List companies with contract actives to see values")
     public List<ActivesCompaniesToValues> listActivesCompaniesAndValues( @RequestParam String contracteeDocumentNumber,
                                                                          @RequestParam String contractNumber,
@@ -65,10 +65,10 @@ public class BusinessController {
        return paymentService.listActivesCompaniesAndValues(contracteeDocumentNumber, contractNumber, spokesmanDocument, details);
     }
 
-    @GetMapping("/listCompanies")
+    // TODO: adicionar paginação, e filtros p listagem (status, data, cnpj, ja pagos, ainda não pagos)
+    @GetMapping("/list-companies")
     @Operation(summary = "List companies")
     public List<CompanyResponse> listCompanies(@RequestParam String spokesmanDocument, String details) {
         return companyService.listCompanies(spokesmanDocument, details);
     }
-
 }

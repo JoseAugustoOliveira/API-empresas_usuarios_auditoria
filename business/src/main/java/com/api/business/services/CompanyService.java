@@ -1,7 +1,8 @@
 package com.api.business.services;
 
+import com.api.business.builders.CompanyDataBuilder;
+import com.api.business.builders.CompanyResponseBuilder;
 import com.api.business.entites.CompanyData;
-import com.api.business.enums.PaymentStatus;
 import com.api.business.exceptions.CompanyErrorException;
 import com.api.business.exceptions.EmptyListCompaniesException;
 import com.api.business.models.request.CompanyRequest;
@@ -11,9 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -24,31 +24,21 @@ public class CompanyService {
     private final AuditService auditService;
 
     public CompanyResponse saveCompany(CompanyRequest request, String spokesmanDocument, String details) {
+        var existingCompanyAndContract = getByContracteeDocumentNumberAndContractNumber(request);
 
-        // TODO: fazer uma validação onde o CNPJ ja existe
         try {
-            CompanyData companyData = CompanyData.builder()
-                    .companyName(request.getCompanyName())
-                    .orderValue(BigDecimal.ZERO)
-                    .initialDate(LocalDate.now())
-                    .lastUpdateDate(LocalDate.now())
-                    .contracteeDocumentNumber(request.getContracteeDocumentNumber())
-                    .isActive(true)
-                    .email(request.getEmail())
-                    .madePayment(false)
-                    .contractNumber(request.getContractNumber())
-                    .paymentStatus(PaymentStatus.WAITING_PROCESSING)
-                    .build();
+            if (existingCompanyAndContract.isPresent()) {
+                throw new CompanyErrorException("There is a company with contract document number " + request.getContracteeDocumentNumber() +
+                        " and contract " + request.getContractNumber());
+            }
+
+            var companyData = CompanyDataBuilder.builder(request);
 
             auditService.registerAuditToStaff(spokesmanDocument, details);
             companyRepository.save(companyData);
+            log.info("Company with contract document number: {} registered successfully", request.getContracteeDocumentNumber());
 
-            return CompanyResponse.builder()
-                    .contractNumber(companyData.getContractNumber())
-                    .companyName(companyData.getCompanyName())
-                    .email(request.getEmail())
-                    .paymentStatus(companyData.getPaymentStatus())
-                    .build();
+            return CompanyResponseBuilder.build(companyData);
 
         } catch (CompanyErrorException ex) {
             log.error("Error to register company name: {}", request.getCompanyName());
@@ -64,5 +54,12 @@ public class CompanyService {
 
         auditService.registerAuditToStaff(spokesmanDocument, details);
         return listCompanies;
+    }
+
+    private Optional<CompanyData> getByContracteeDocumentNumberAndContractNumber(CompanyRequest request) {
+        return companyRepository.findByContracteeDocumentNumberAndContractNumber(
+                request.getContracteeDocumentNumber(),
+                request.getContractNumber()
+        );
     }
 }

@@ -18,7 +18,7 @@ public class GenerateFileController {
     @Autowired
     private GenerateFileService generateFileService;
 
-    @GetMapping("/generate-pdf/{contracteeDocumentNumber}")
+    @GetMapping("/pdf/{contracteeDocumentNumber}")
     public ResponseEntity<ByteArrayResource> generatePdfByCnpj(@PathVariable String contracteeDocumentNumber) {
         return generateFileService.generatePdfByCnpj(contracteeDocumentNumber);
     }

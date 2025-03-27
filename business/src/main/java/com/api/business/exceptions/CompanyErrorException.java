@@ -11,4 +11,8 @@ public class CompanyErrorException extends RuntimeException {
     public CompanyErrorException(String msg, Throwable cause) {
         super(msg, cause);
     }
+
+    public CompanyErrorException(String msg) {
+        super(msg);
+    }
 }
